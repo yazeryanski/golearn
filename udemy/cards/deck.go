@@ -16,6 +16,7 @@ var values []string = []string{"Ace", "Two", "Three", "Four", "Five", "Six", "Se
 
 type Deck []string
 
+// Constructors
 func GetNewDec() Deck {
 	var deck Deck
 
@@ -28,6 +29,20 @@ func GetNewDec() Deck {
 	return deck
 }
 
+func GetNewDeckFromFile(filePath string) (Deck, error) {
+	bytes, err := os.ReadFile(filePath)
+
+	if err != nil {
+		return nil, err
+	}
+
+	content := string(bytes)
+	result := strings.Split(content, SEPARATOR)
+
+	return result, nil
+}
+
+// Methods
 func (d Deck) print() {
 	for i, card := range d {
 		fmt.Println(i+1, ")", card)
@@ -50,15 +65,6 @@ func (d Deck) export(fileName string) error {
 	return os.WriteFile(filePath, body, DEFAULT_PERMISSION)
 }
 
-func GetNewDeckFromFile(filePath string) (Deck, error) {
-	bytes, err := os.ReadFile(filePath)
-
-	if err != nil {
-		return nil, err
-	}
-
-	content := string(bytes)
-	result := strings.Split(content, SEPARATOR)
-
-	return result, nil
+func (d *Deck) shuffle() {
+	*d = ShuffleArray(*d)
 }
